@@ -10,6 +10,9 @@ import { NavComponent } from './nav/nav.component';
 import { RegionService } from './core/region.service';
 import { FileListService } from './file-list.service';
 import { FileListComponent } from './file-list/file-list.component';
+import { FileViewComponent } from './file-view/file-view.component';
+import { AppRoutingModule } from './app-routing.module';
+import {AgGridModule} from 'ag-grid-angular/main';
 
 @NgModule({
   declarations: [
@@ -18,10 +21,14 @@ import { FileListComponent } from './file-list/file-list.component';
     HeaderComponent,
     NavComponent,
     FileListComponent,
-    FileListComponent
+    FileListComponent,
+    FileViewComponent
   ],
   imports: [
-    BrowserModule, HttpClientModule
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    AgGridModule.withComponents([])
   ],
   providers: [RegionService, FileListService],
   bootstrap: [AppComponent]

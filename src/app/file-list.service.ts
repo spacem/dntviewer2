@@ -14,8 +14,9 @@ export class FileListService {
 
   getFiles() {
     const url = this.regionService.region.url + '/files.txt';
-    return this.http.get(url, { responseType: 'text' }).pipe(map(data => {
-      return (data as string).split('\n');
-    }));
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      map(data => {
+        return data.split('\n').map(f => f.trim());
+      }));
   }
 }
