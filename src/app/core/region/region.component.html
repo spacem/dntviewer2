@@ -1,0 +1,83 @@
+<div class="toggle-box">
+  <button class="light-toggle toggle-box-button" (click)="edit = !edit;" title="{{regionService.region.name}}">
+    {{regionService.region.region}}
+  </button>
+  <span>
+    &nbsp;{{dntVersion}}
+  </span>
+</div>
+<div *ngIf="edit" class="toggle-box">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 region-heading">
+        <br /> select region
+        <br>
+        <small>지역 선택 / 选择地区 </small>
+      </div>
+    </div>
+    <div class="row" *ngFor="let currentLocation of regionService.regions">
+
+      <div class="col-xs-9 col-sm-9 text-right">
+        <a href="#" class="region-hover toggle-text" (click)="regionService.region = currentLocation"
+          (mouseenter)="hoverLocation = currentLocation"
+          (mouseleave)="hoverLocation = regionService.region">
+          {{currentLocation.name}}
+        </a>
+      </div>
+      <div class="col-xs-2 col-sm-2">
+
+        <button class="toggle-box-button" [ngClass]="{'dark-toggle' : currentLocation != hoverLocation, 'light-toggle' : currentLocation == hoverLocation}"
+          (click)="regionService.region = currentLocation" title="{{currentLocation.name}}"
+          (mouseenter)="hoverLocation = currentLocation"
+          (mouseleave)="hoverLocation = regionService.region">
+          {{currentLocation.region}}
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 region-heading">
+        <br /> translation override
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-sm-10">
+      </div>
+      <div class="col-xs-3 col-sm-1">
+        <button class="toggle-box-button" [ngClass]="{'dark-toggle' : !override, 'light-toggle' : override}" (click)="regionService.setOverride(true)"
+          title="yes">
+          yes
+        </button>
+      </div>
+      <div class="col-xs-3 col-sm-1">
+        <button class="toggle-box-button" [ngClass]="{'dark-toggle' : override, 'light-toggle' : !override}" (click)="regionService.setOverride(false)"
+          title="no">
+          no
+        </button>
+      </div>
+    </div>
+    <div class="row" *ngIf="override">
+      <div class="col-xs-12">
+        <br /> translations
+      </div>
+    </div>
+    <template *ngIf="override">
+      <div class="row" *ngFor="let currentLocation of regionService.regions">
+        <a href="#" class="region-hover" (click)="setTLocation(currentLocation)" (mouseenter)="tHoverLocation = currentLocation"
+          (mouseleave)="tHoverLocation = getTlocation()">
+
+          <div class="col-xs-10 col-sm-11 text-right toggle-text">
+            {{currentLocation.name}}
+          </div>
+          <div class="col-xs-2 col-sm-1">
+
+            <button class="toggle-box-button" [ngClass]="{'dark-toggle' : currentLocation != tHoverLocation, 'light-toggle' : currentLocation == tHoverLocation}"
+              (click)="setTLocation(currentLocation)" title="{{currentLocation.name}}">
+              {{currentLocation.region}}
+            </button>
+          </div>
+        </a>
+      </div>
+    </template>
+    <br />
+  </div>
+</div>

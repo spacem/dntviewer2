@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-6">
+    &nbsp;
+  </div>
+  <div class="col-6">
+    <div class="input-group">
+      <input #searchBox  (keyup)="filter(searchBox.value)" type="text" class="form-control" placeholder="search file names" aria-label="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" (click)="filter(searchBox.value)">
+            <i class="fa fa-lg fa-search" aria-hidden="true"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="col-12">
+      &nbsp;
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <button class="btn btn-secondary btn-block" *ngFor="let file of files$ | async" (click)="loadFile(file)">
+      {{ file.replace('.lzjson', '') }}
+    </button>
+</div>
+</div>
