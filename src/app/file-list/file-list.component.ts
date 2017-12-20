@@ -24,19 +24,23 @@ export class FileListComponent implements OnInit, OnDestroy {
 
   filter(term: string) {
     this.searchTerms.next(term);
-    // this.filteredFiles = this.files.filter(f => f.toUpperCase().indexOf(term.toUpperCase()));
   }
 
   ngOnInit() {
     this.subscription = this.fileListService.getFiles().subscribe(files => {
       this.files = files;
+      this.filter('');
     });
 
     this.files$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       map((term: string) => {
-        return this.files.filter(f => f.toUpperCase().indexOf(term.toUpperCase()) > -1);
+        const terms = term.toUpperCase().split(' ');
+        return this.files.filter(f => {
+          const file = f.toUpperCase();
+          return terms.every(t => file.indexOf(t) > -1);
+        });
       }),
     );
   }
@@ -48,5 +52,6 @@ export class FileListComponent implements OnInit, OnDestroy {
   }
 
   loadFile() {
+    // TODO
   }
 }
