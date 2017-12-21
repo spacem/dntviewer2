@@ -14,6 +14,8 @@ import { FileViewComponent } from './file-view/file-view.component';
 import { AppRoutingModule } from './app-routing.module';
 import {AgGridModule} from 'ag-grid-angular/main';
 import { DntService } from './dnt.service';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { CacheInterceptor } from './cache';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,15 @@ import { DntService } from './dnt.service';
     AppRoutingModule,
     AgGridModule.withComponents([])
   ],
-  providers: [RegionService, FileListService, DntService],
+  providers: [
+    RegionService,
+    FileListService,
+    DntService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CacheInterceptor,
+      multi: true,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

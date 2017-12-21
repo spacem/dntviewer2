@@ -27,11 +27,6 @@ export class FileListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.fileListService.getFiles().subscribe(files => {
-      this.files = files;
-      this.filter('');
-    });
-
     this.files$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -43,6 +38,11 @@ export class FileListComponent implements OnInit, OnDestroy {
         });
       }),
     );
+
+    this.subscription = this.fileListService.getFiles().subscribe(files => {
+      this.files = files;
+      this.filter('');
+    });
   }
 
   ngOnDestroy() {
