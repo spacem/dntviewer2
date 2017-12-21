@@ -13,6 +13,7 @@ import { FileListComponent } from './file-list/file-list.component';
 import { FileViewComponent } from './file-view/file-view.component';
 import { AppRoutingModule } from './app-routing.module';
 import {AgGridModule} from 'ag-grid-angular/main';
+import { DntService } from './dnt.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import {AgGridModule} from 'ag-grid-angular/main';
     AppRoutingModule,
     AgGridModule.withComponents([])
   ],
-  providers: [RegionService, FileListService],
+  providers: [RegionService, FileListService, DntService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

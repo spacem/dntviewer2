@@ -1,4 +1,12 @@
-<div class="ar-grid-container">
-  <ag-grid-angular style="height: 100%;" class="ag-theme-dark" [rowData]="rowData" [columnDefs]="columnDefs">
+<div class="row">
+  <div class="col-12">
+    <a routerLink="/files" class="btn btn-secondary">
+      <i class="fa fa-lg fa-chevron-circle-left" aria-hidden="true"></i>
+      file list
+    </a>
+  </div>
+</div>
+<div class="ar-grid-container" *ngIf="rowData">
+  <ag-grid-angular style="height: 100%;" class="ag-theme-dark" [rowData]="rowData" [columnDefs]="columnDefs" [gridOptions]="gridOptions">
   </ag-grid-angular>
 </div>

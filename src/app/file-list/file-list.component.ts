@@ -50,8 +50,4 @@ export class FileListComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
-
-  loadFile() {
-    // TODO
-  }
 }
