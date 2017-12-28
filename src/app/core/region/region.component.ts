@@ -8,7 +8,10 @@ import { RegionService } from '../region.service';
 })
 export class RegionComponent implements OnInit {
 
-  constructor(private regionService: RegionService) { }
+  dntVersion: string;
+  edit: boolean;
+
+  constructor(public regionService: RegionService) { }
 
   ngOnInit() {
   }
