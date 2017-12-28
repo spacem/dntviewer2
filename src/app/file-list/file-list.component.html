@@ -18,8 +18,8 @@
 </div>
 
 <div class="row">
-  <div class="col-12">
-    <a routerLink="/file/{{file}}" class="btn btn-secondary btn-block" *ngFor="let file of files$ | async">
+  <div class="col-12" *ngIf="files">
+    <a routerLink="/file/{{file}}" class="btn btn-secondary btn-block" *ngFor="let file of files">
       {{ file.replace('.lzjson', '') }}
     </a>
 </div>

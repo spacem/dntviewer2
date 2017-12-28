@@ -18,7 +18,7 @@ export class FileViewComponent implements OnInit {
   gridOptions: GridOptions = {
     enableFilter: true,
     enableSorting: true,
-    showToolPanel: true,
+    showToolPanel: false,
     enableColResize: true
   };
 

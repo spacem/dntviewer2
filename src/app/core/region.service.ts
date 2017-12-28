@@ -19,7 +19,7 @@ export class RegionService implements OnInit {
     { region: 'kdn', name: 'korea 대한민국', url: 'https://kdnfiles.netlify.com/public' },
   ];
 
-  region: Region = this.regions[this.regions.length-1];
+  region: Region = this.regions[this.regions.length - 1];
 
   constructor() {
   }

@@ -6,17 +6,22 @@ import { map } from 'rxjs/operators/map';
 import 'rxjs/add/observable/of';
 import { decompressFromUTF16 } from 'lz-string';
 import { Observable } from 'rxjs/Observable';
+import { LoadingService } from './core/loading/loading.service';
 
 @Injectable()
 export class DntService {
 
   constructor(
     private http: HttpClient,
-    private regionService: RegionService) {
+    private regionService: RegionService,
+    private loadingService: LoadingService) {
   }
 
   getData(file: string) {
-    return this.fetch(file).pipe(
+    const observable = this.fetch(file);
+    this.loadingService.subscribe(file, observable);
+
+    return observable.pipe(
       map(data => {
         return JSON.parse(decompressFromUTF16(data)) as DntData;
       }));

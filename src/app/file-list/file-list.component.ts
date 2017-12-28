@@ -14,33 +14,28 @@ import {
   styleUrls: ['./file-list.component.scss']
 })
 export class FileListComponent implements OnInit, OnDestroy {
-  searchTerms = new Subject<string>();
+  allFiles: string[];
   files: string[];
-  files$: Observable<string[]>;
   subscription: Subscription;
 
   constructor(private fileListService: FileListService) {
   }
 
   filter(term: string) {
-    this.searchTerms.next(term);
+    if (!this.allFiles) {
+      return;
+    }
+
+    const terms = term.toUpperCase().split(' ');
+    this.files = this.allFiles.filter(f => {
+      const file = f.toUpperCase();
+      return terms.every(t => file.indexOf(t) > -1);
+    });
   }
 
   ngOnInit() {
-    this.files$ = this.searchTerms.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      map((term: string) => {
-        const terms = term.toUpperCase().split(' ');
-        return this.files.filter(f => {
-          const file = f.toUpperCase();
-          return terms.every(t => file.indexOf(t) > -1);
-        });
-      }),
-    );
-
     this.subscription = this.fileListService.getFiles().subscribe(files => {
-      this.files = files;
+      this.allFiles = files;
       this.filter('');
     });
   }

@@ -1,0 +1,9 @@
+<p *ngIf="loadingService.isLoading()">
+    {{ loadingService.getLoadingString() }};
+</p>
+<p *ngIf="loadingService.hadError()">
+  <button class="btn btn-link" (click)="loadingService.clearErrors();">ignore error</button>
+</p>
+<div [hidden]="loadingService.isLoading()">
+  <ng-content></ng-content>
+</div>

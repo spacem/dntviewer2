@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { LoadingService } from './core/loading/loading.service';
+
+const FILES_FILENAME = 'files.txt';
 
 @Injectable()
 export class FileListService {
@@ -13,11 +16,15 @@ export class FileListService {
 
   constructor(
     private http: HttpClient,
-    private regionService: RegionService) {
+    private regionService: RegionService,
+    private loadingService: LoadingService) {
   }
 
   getFiles() {
-    return this.getFileData().pipe(
+    const observable = this.getFileData();
+    this.loadingService.subscribe(FILES_FILENAME, observable);
+
+    return observable.pipe(
       map(data => {
         this.fileData = data;
         this.lastRegion = this.regionService.region.region;
@@ -26,11 +33,7 @@ export class FileListService {
   }
 
   getFileData() {
-    // if (this.fileData && this.lastRegion === this.regionService.region.region) {
-      // return Observable.of(this.fileData);
-    // } else {
-      const url = this.regionService.region.url + '/files.txt';
-      return this.http.get(url, { responseType: 'text' });
-    // }
+    const url = this.regionService.region.url + '/' + FILES_FILENAME;
+    return this.http.get(url, { responseType: 'text' });
   }
 }

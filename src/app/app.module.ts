@@ -15,7 +15,9 @@ import { AppRoutingModule } from './app-routing.module';
 import {AgGridModule} from 'ag-grid-angular/main';
 import { DntService } from './dnt.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import { CacheInterceptor } from './cache';
+import { CacheInterceptor } from './cache.interceptor';
+import { LoadingComponent } from './core/loading/loading.component';
+import { LoadingService } from './core/loading/loading.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { CacheInterceptor } from './cache';
     NavComponent,
     FileListComponent,
     FileListComponent,
-    FileViewComponent
+    FileViewComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +39,7 @@ import { CacheInterceptor } from './cache';
   providers: [
     RegionService,
     FileListService,
+    LoadingService,
     DntService,
     {
       provide: HTTP_INTERCEPTORS,
