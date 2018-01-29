@@ -18,6 +18,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { CacheInterceptor } from './cache.interceptor';
 import { LoadingComponent } from './core/loading/loading.component';
 import { LoadingService } from './core/loading/loading.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { LoadingService } from './core/loading/loading.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    FormsModule,
     AgGridModule.withComponents([])
   ],
   providers: [

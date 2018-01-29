@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import {
   debounceTime, distinctUntilChanged, map
 } from 'rxjs/operators';
+import { RegionService } from '../core/region.service';
 
 @Component({
   selector: 'app-file-list',
@@ -17,8 +18,11 @@ export class FileListComponent implements OnInit, OnDestroy {
   allFiles: string[];
   files: string[];
   subscription: Subscription;
+  searchTerm = '';
 
-  constructor(private fileListService: FileListService) {
+  constructor(
+    private fileListService: FileListService,
+    private regionService: RegionService) {
   }
 
   filter(term: string) {
@@ -34,9 +38,19 @@ export class FileListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.init();
+    this.regionService.subject.subscribe(() => {
+      this.init();
+    });
+  }
+
+  init() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     this.subscription = this.fileListService.getFiles().subscribe(files => {
       this.allFiles = files;
-      this.filter('');
+      this.filter(this.searchTerm);
     });
   }
 

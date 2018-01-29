@@ -4,6 +4,7 @@ import { DntService } from '../dnt.service';
 import { ActivatedRoute } from '@angular/router';
 import { DntData } from '../dnt-data';
 import { ColumnApi, GridApi, GridOptions } from 'ag-grid/main';
+import { RegionService } from '../core/region.service';
 
 @Component({
   selector: 'app-file-view',
@@ -24,9 +25,21 @@ export class FileViewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dntService: DntService) { }
+    private dntService: DntService,
+    private regionService: RegionService) {
+  }
 
   ngOnInit() {
+    this.init();
+    this.regionService.subject.subscribe(() => {
+      this.init();
+    });
+  }
+
+  init() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     const fileName = this.route.snapshot.paramMap.get('fileName');
     this.subscription = this.dntService.getData(fileName).subscribe(data => {
       this.createData(data);

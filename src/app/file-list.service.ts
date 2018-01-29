@@ -11,9 +11,6 @@ const FILES_FILENAME = 'files.txt';
 @Injectable()
 export class FileListService {
 
-  private fileData: string;
-  private lastRegion: string;
-
   constructor(
     private http: HttpClient,
     private regionService: RegionService,
@@ -26,8 +23,6 @@ export class FileListService {
 
     return observable.pipe(
       map(data => {
-        this.fileData = data;
-        this.lastRegion = this.regionService.region.region;
         return data.split('\n').map(f => f.trim());
       }));
   }

@@ -4,7 +4,7 @@
   </div>
   <div class="col-6">
     <div class="input-group">
-      <input #searchBox (keyup)="filter(searchBox.value)" type="text" class="form-control" placeholder="search file names" aria-label="Search for...">
+      <input #searchBox (keyup)="filter(searchBox.value)" [(ngModel)]="searchTerm" type="text" class="form-control" placeholder="search file names" aria-label="Search for...">
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="button" (click)="filter(searchBox.value)">
             <i class="fa fa-lg fa-search" aria-hidden="true"></i>
