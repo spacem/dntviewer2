@@ -18,8 +18,8 @@ export class FileListService {
   }
 
   getFiles() {
-    const observable = this.getFileData();
-    this.loadingService.subscribe(FILES_FILENAME, observable);
+    let observable = this.getFileData();
+    observable = this.loadingService.subscribe(FILES_FILENAME, observable);
 
     return observable.pipe(
       map(data => {

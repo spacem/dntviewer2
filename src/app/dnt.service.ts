@@ -18,8 +18,8 @@ export class DntService {
   }
 
   getData(file: string) {
-    const observable = this.fetch(file);
-    this.loadingService.subscribe(file, observable);
+    let observable = this.fetch(file);
+    observable = this.loadingService.subscribe(file, observable);
 
     return observable.pipe(
       map(data => {

@@ -33,22 +33,15 @@ export class LoadingService {
 
   subscribe(fileName: string, observable: Observable<string>) {
     this.loadingFiles.push(fileName);
-    const subscription = observable.subscribe(
-      event => {
-        this.loadingFiles = this.loadingFiles.filter(f => f !== fileName);
-        if (subscription) {
-          subscription.unsubscribe();
-        }
-      },
-      error => {
-        this.loadingFiles = this.loadingFiles.filter(f => f !== fileName);
-        this.errors.push(error.message);
-        if (subscription) {
-          subscription.unsubscribe();
-        }
-      }
-    );
+
+    observable = observable.catch((err, caught) => {
+      this.loadingFiles = this.loadingFiles.filter(f => f !== fileName);
+      this.errors.push(err.message);
+      return Observable.of('');
+    });
+
+    return observable.do(event => {
+      this.loadingFiles = this.loadingFiles.filter(f => f !== fileName);
+    });
   }
-
-
 }

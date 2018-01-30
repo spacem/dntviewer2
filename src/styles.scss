@@ -17,8 +17,7 @@
     position: fixed;
     z-index:-999;
     filter: blur(4px);
-  }
-
+}
   
 .chunkyness {
     background-color: rgba(7,5,6,0.75);
@@ -65,4 +64,9 @@ div.ag-root {
 	-moz-user-select:text;
 	-ms-user-select:text;
 	user-select:text;
+}
+
+.container-fluid {
+  padding-left: 2px;
+  padding-right: 2px;
 }

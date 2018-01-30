@@ -20,6 +20,9 @@ import { LoadingComponent } from './core/loading/loading.component';
 import { LoadingService } from './core/loading/loading.service';
 import { FormsModule } from '@angular/forms';
 
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+
 @NgModule({
   declarations: [
     AppComponent,
