@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FileListService } from '../file-list.service';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { Subject } from 'rxjs/Subject';
 import {
   debounceTime, distinctUntilChanged, map
 } from 'rxjs/operators';
 import { RegionService } from '../core/region.service';
+import { CacheInterceptor } from '../cache.interceptor';
 
 @Component({
   selector: 'app-file-list',
@@ -15,14 +14,19 @@ import { RegionService } from '../core/region.service';
   styleUrls: ['./file-list.component.scss']
 })
 export class FileListComponent implements OnInit, OnDestroy {
-  allFiles: string[];
-  files: string[];
-  subscription: Subscription;
+  allFiles: string[] = [];
+  allOpenFiles: string[] = [];
+  files: string[] = [];
+  openFiles: string[] = [];
+
+  subscription: any;
+  regionSubscription: any;
   searchTerm = '';
 
   constructor(
     private fileListService: FileListService,
-    private regionService: RegionService) {
+    private regionService: RegionService,
+    private cacheInterceptor: CacheInterceptor) {
   }
 
   filter(term: string) {
@@ -35,11 +39,24 @@ export class FileListComponent implements OnInit, OnDestroy {
       const file = f.toUpperCase();
       return terms.every(t => file.indexOf(t) > -1);
     });
+
+    this.openFiles = this.allOpenFiles.filter(f => {
+      const file = f.toUpperCase();
+      return terms.every(t => file.indexOf(t) > -1);
+    });
+  }
+
+  getOpenFiles() {
+    return this.cacheInterceptor.getLoadedFiles().map(f => {
+      const parts = f.split('/');
+      return parts[parts.length - 1];
+    });
   }
 
   ngOnInit() {
     this.init();
-    this.regionService.subject.subscribe(() => {
+    this.regionSubscription = this.regionService.subject.subscribe(() => {
+      this.cacheInterceptor.clearCache();
       this.init();
     });
   }
@@ -50,6 +67,7 @@ export class FileListComponent implements OnInit, OnDestroy {
     }
     this.subscription = this.fileListService.getFiles().subscribe(files => {
       this.allFiles = files;
+      this.allOpenFiles = this.getOpenFiles();
       this.filter(this.searchTerm);
     });
   }
@@ -57,6 +75,10 @@ export class FileListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+
+    if (this.regionSubscription) {
+      this.regionSubscription.unsubscribe();
     }
   }
 }

@@ -17,14 +17,14 @@
     </div>
     <div class="row" *ngFor="let currentLocation of regionService.regions">
 
-      <div class="col-xs-9 col-sm-9 text-right">
+      <div class="col-8 text-right">
         <button href="#" class="text-left btn-link btn-block region-hover toggle-text" (click)="setRegion(currentLocation)"
           (mouseenter)="hoverLocation = currentLocation"
           (mouseleave)="hoverLocation = regionService.region">
           {{currentLocation.name}}
         </button>
       </div>
-      <div class="col-xs-2 col-sm-2">
+      <div class="col-2">
         <button class="toggle-box-button" [ngClass]="{'dark-toggle' : currentLocation != hoverLocation, 'light-toggle' : currentLocation == hoverLocation}"
           (click)="setRegion(currentLocation)" title="{{currentLocation.name}}"
           (mouseenter)="hoverLocation = currentLocation"
@@ -58,7 +58,7 @@
     <ng-container *ngIf="override">
       <div class="row" *ngFor="let currentLocation of regionService.regions">
 
-        <div class="col-xs-9 col-sm-9 text-right">
+        <div class="col-8 text-right">
           <button href="#" class="text-left btn-link btn-block region-hover toggle-text"
             (click)="setTLocation(currentLocation)"
             (mouseenter)="tHoverLocation = currentLocation"
@@ -66,7 +66,7 @@
             {{currentLocation.name}}
           </button>
         </div>
-        <div class="col-xs-2 col-sm-2">
+        <div class="col-2">
           <button class="toggle-box-button" [ngClass]="{'dark-toggle' : currentLocation != tHoverLocation, 'light-toggle' : currentLocation == tHoverLocation}"
             (click)="setTLocation(currentLocation)" title="{{currentLocation.name}}"
             (mouseenter)="tHoverLocation = currentLocation"

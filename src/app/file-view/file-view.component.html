@@ -1,12 +1,32 @@
 <div class="row">
-  <div class="col-12">
+  <div class="col-6">
     <a routerLink="/files" class="btn btn-secondary">
       <i class="fa fa-lg fa-chevron-circle-left" aria-hidden="true"></i>
       file list
     </a>
   </div>
+  <div class="col-6 text-right">
+    <button class="btn btn-secondary" (click)="showOptions = !showOptions">
+      <i class="fa fa-lg fa-columns" aria-hidden="true"></i>
+      column options
+    </button>
+  </div>
 </div>
+<ng-container *ngIf="showOptions">
+  <div class="row" *ngFor="let c of columnDefs">
+      <div class="col-6 text-right">
+        {{ c.field }} 
+      </div>
+      <div class="col-6 text-left">
+          <select [(ngModel)]="c.status" class="form-control" (change)="applyColumn(c)">
+            <option value="normal">visible (normal)</option>
+            <option value="text">visible (text)</option>
+            <option value="hidden">hidden</option>
+          </select>
+      </div>
+  </div>
+</ng-container>
 <div class="ar-grid-container" *ngIf="rowData">
-  <ag-grid-angular style="height: 100%;" class="ag-theme-dark" [rowData]="rowData" [columnDefs]="columnDefs" [gridOptions]="gridOptions">
+  <ag-grid-angular style="height: 100%;" class="ag-theme-dark" [rowData]="rowData" [columnDefs]="columnDefs" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)">
   </ag-grid-angular>
 </div>

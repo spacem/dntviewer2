@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { LoadingService } from './core/loading/loading.service';
+import { CacheInterceptor } from './cache.interceptor';
 
 const FILES_FILENAME = 'files.txt';
 
@@ -23,7 +24,7 @@ export class FileListService {
 
     return observable.pipe(
       map(data => {
-        return data.split('\n').map(f => f.trim());
+        return data.split('\n').filter(d => d.indexOf('lzjson') > -1 && d.indexOf('uistring') === -1).map(f => f.trim());
       }));
   }
 

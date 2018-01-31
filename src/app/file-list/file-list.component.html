@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-6">
+  <div class="col-2">
     &nbsp;
   </div>
-  <div class="col-6">
+  <div class="col-10">
     <div class="input-group">
       <input #searchBox (keyup)="filter(searchBox.value)" [(ngModel)]="searchTerm" type="text" class="form-control" placeholder="search file names" aria-label="Search for...">
       <span class="input-group-btn">
@@ -18,9 +18,20 @@
 </div>
 
 <div class="row">
+  <div class="col-12">
+    <label>Loaded Files {{ allOpenFiles.length }}</label>
+  </div>
+  <div class="col-12" *ngIf="openFiles.length">
+    <a routerLink="/file/{{file}}" class="btn btn-secondary btn-block" *ngFor="let file of openFiles">
+      {{ file.replace('.lzjson', '') }}
+    </a>
+  </div>
+
+  <div class="col-12">
+    <label>All Files {{ allFiles.length }}</label>
+  </div>
   <div class="col-12" *ngIf="files">
     <a routerLink="/file/{{file}}" class="btn btn-secondary btn-block" *ngFor="let file of files">
       {{ file.replace('.lzjson', '') }}
     </a>
-</div>
 </div>

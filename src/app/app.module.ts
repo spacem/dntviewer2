@@ -9,6 +9,7 @@ import { HeaderComponent } from './header/header.component';
 import { NavComponent } from './nav/nav.component';
 import { RegionService } from './core/region.service';
 import { FileListService } from './file-list.service';
+import { TranslationService } from './translation.service';
 import { FileListComponent } from './file-list/file-list.component';
 import { FileViewComponent } from './file-view/file-view.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -44,8 +45,10 @@ import 'rxjs/add/operator/catch';
   providers: [
     RegionService,
     FileListService,
+    TranslationService,
     LoadingService,
     DntService,
+    CacheInterceptor,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CacheInterceptor,

@@ -11,6 +11,7 @@ import { LoadingService } from './core/loading/loading.service';
 @Injectable()
 export class DntService {
 
+  loadedFiles: string[];
   constructor(
     private http: HttpClient,
     private regionService: RegionService,
