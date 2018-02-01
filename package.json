@@ -6,7 +6,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "test": "ng test",
+    "test": "ng test -sm=false",
+    "coverage": "ng test -sm=false --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -27,6 +28,7 @@
     "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "lz-string": "^1.4.4",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.20"

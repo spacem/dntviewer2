@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 
 import { HeaderComponent } from './header.component';
+import { RegionComponent } from '../core/region/region.component';
+
+@Component({ selector: 'app-region', template: ''})
+class RegionStubComponent {
+}
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,7 +14,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [ HeaderComponent, RegionStubComponent ]
     })
     .compileComponents();
   }));

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegionComponent } from './region.component';
+import { RegionService } from '../region.service';
 
 describe('RegionComponent', () => {
   let component: RegionComponent;
@@ -8,7 +9,10 @@ describe('RegionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegionComponent ]
+      declarations: [ RegionComponent ],
+      providers: [
+        RegionService
+      ]
     })
     .compileComponents();
   }));

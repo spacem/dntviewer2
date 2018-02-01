@@ -10,7 +10,8 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular/cli/plugins/karma'),
+      require('karma-phantomjs-launcher'),
     ],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -21,6 +22,11 @@ module.exports = function (config) {
     },
     angularCli: {
       environment: 'dev'
+    },
+    phantomjsLauncher: {
+      // Have phantomjs exit if a ResourceError is encountered 
+      // (useful if karma exits without killing phantom)
+      exitOnResourceError: true // Could require proxy if tests access images without /base path
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
