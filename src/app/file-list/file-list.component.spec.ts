@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 class FileListServiceStub {
-  files: string[];
+  files: string[] = [];
   getFiles() {
     return Observable.of(this.files);
   }

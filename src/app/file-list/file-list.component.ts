@@ -29,30 +29,6 @@ export class FileListComponent implements OnInit, OnDestroy {
     private cacheInterceptor: CacheInterceptor) {
   }
 
-  filter(term: string) {
-    if (!this.allFiles) {
-      return;
-    }
-
-    const terms = term.toUpperCase().split(' ');
-    this.files = this.allFiles.filter(f => {
-      const file = f.toUpperCase();
-      return terms.every(t => file.indexOf(t) > -1);
-    });
-
-    this.openFiles = this.allOpenFiles.filter(f => {
-      const file = f.toUpperCase();
-      return terms.every(t => file.indexOf(t) > -1);
-    });
-  }
-
-  getOpenFiles() {
-    return this.cacheInterceptor.getLoadedFiles().map(f => {
-      const parts = f.split('/');
-      return parts[parts.length - 1];
-    });
-  }
-
   ngOnInit() {
     this.init();
     this.regionSubscription = this.regionService.subject.subscribe(() => {
@@ -80,5 +56,29 @@ export class FileListComponent implements OnInit, OnDestroy {
     if (this.regionSubscription) {
       this.regionSubscription.unsubscribe();
     }
+  }
+
+  filter(term: string) {
+    if (!this.allFiles) {
+      return;
+    }
+
+    const terms = term.toUpperCase().split(' ');
+    this.files = this.allFiles.filter(f => {
+      const file = f.toUpperCase();
+      return terms.every(t => file.indexOf(t) > -1);
+    });
+
+    this.openFiles = this.allOpenFiles.filter(f => {
+      const file = f.toUpperCase();
+      return terms.every(t => file.indexOf(t) > -1);
+    });
+  }
+
+  getOpenFiles() {
+    return this.cacheInterceptor.getLoadedFiles().map(f => {
+      const parts = f.split('/');
+      return parts[parts.length - 1];
+    });
   }
 }

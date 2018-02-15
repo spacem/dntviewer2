@@ -113,8 +113,8 @@ export class FileViewComponent implements OnInit, OnDestroy {
     this.rowData = [];
     for (const r of this.data.data) {
       const row: any = {};
-      for (const colName of Object.keys(this.data.columnIndexes)) {
-        const colIndex = this.data.columnIndexes[colName];
+      for (let colIndex = 0; colIndex < this.data.numColumns; ++colIndex) {
+        const colName = this.data.columnNames[colIndex];
         row[colName] = r[colIndex];
         if (this.columnDefs[colIndex].status === 'text') {
           row[colName] = this.translateService.simpleTranslate(row[colName]);
