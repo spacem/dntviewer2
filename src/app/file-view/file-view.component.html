@@ -18,7 +18,7 @@
         {{ c.field }} 
       </div>
       <div class="col-6 text-left">
-          <select [(ngModel)]="c.status" class="form-control" (change)="applyColumn(c)">
+          <select [(ngModel)]="columnStatuses[c.field]" class="form-control" (change)="applyColumn(c)">
             <option value="normal">visible (normal)</option>
             <option value="text">visible (text)</option>
             <option value="hidden">hidden</option>
@@ -26,7 +26,7 @@
       </div>
   </div>
 </ng-container>
-<div class="ar-grid-container" *ngIf="rowData">
-  <ag-grid-angular style="height: 100%;" class="ag-theme-dark" [rowData]="rowData" [columnDefs]="columnDefs" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)">
+<div class="ar-grid-container" *ngIf="data">
+  <ag-grid-angular class="ag-theme-dark" [columnDefs]="columnDefs" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)">
   </ag-grid-angular>
 </div>

@@ -3,7 +3,6 @@ import { RegionService } from './core/region.service';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { LoadingService } from './core/loading/loading.service';
 import { CacheInterceptor } from './cache.interceptor';
 

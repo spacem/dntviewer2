@@ -3,7 +3,6 @@ import { RegionService } from './core/region.service';
 import { DntData } from './dnt-data';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators/map';
-import 'rxjs/add/observable/of';
 import { decompressFromUTF16 } from 'lz-string';
 import { Observable } from 'rxjs/Observable';
 import { LoadingService } from './core/loading/loading.service';
