@@ -19,11 +19,11 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
   private subscription: any;
   private regionSubscription: any;
   private translateSubScription: any;
-  private data: DntData;
   private gridApi: GridApi;
   private gridColumnApi: any;
   private columnStatuses: any = {};
   private columnIndexes: any = {};
+  data: DntData;
 
   textColumns = [
     'NameID',
