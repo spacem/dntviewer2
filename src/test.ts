@@ -14,6 +14,7 @@ import {
 
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;
