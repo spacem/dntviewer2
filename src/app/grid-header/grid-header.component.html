@@ -1,0 +1,14 @@
+<div>
+  <button class="btn btn-light float-right" (click)="onMenuClick()">
+    <i class="fa fa-bars"></i>
+  </button>
+  <button class="btn btn-light float-right" (click)="hideColumn()">
+    X
+  </button>
+  <button class="btn btn-light float-right" (click)="translateColumn(!isTranslateMode())" *ngIf="isNumberColumn()" [ngClass]="{'active': isTranslateMode()}">
+      &nbsp;t&nbsp;
+  </button>
+  <div class="customHeaderLabel float-left" (click)="changeSort($event)">
+    {{params?.displayName}}
+  </div>
+</div>

@@ -1,5 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {tap, catchError} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { HttpEventType } from '@angular/common/http/src/response';
 
 @Injectable()
@@ -31,17 +34,17 @@ export class LoadingService {
     }
   }
 
-  subscribe(fileName: string, observable: Observable<string>) {
+  subscribe(fileName: string, observable: Observable<any>) {
     this.loadingFiles.push(fileName);
 
-    observable = observable.catch((err, caught) => {
+    observable = observable.pipe(catchError((err, caught) => {
       this.loadingFiles = this.loadingFiles.filter(f => f !== fileName);
       this.errors.push(err.message);
-      return Observable.of('');
-    });
+      return observableOf({});
+    }));
 
-    return observable.do(event => {
+    return observable.pipe(tap(event => {
       this.loadingFiles = this.loadingFiles.filter(f => f !== fileName);
-    });
+    }));
   }
 }

@@ -1,6 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {tap} from 'rxjs/operators';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 let cache = {};
 
@@ -12,7 +15,7 @@ export class CacheInterceptor implements HttpInterceptor {
 
     getLoadedFiles() {
         console.log('getting loaded files');
-        return Object.keys(cache).filter(f => f.indexOf('.lzjson') > -1 && f.indexOf('uistring') === -1);
+        return Object.keys(cache).filter(f => f.indexOf('.json') > -1 && f.indexOf('uistring') === -1);
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -21,13 +24,13 @@ export class CacheInterceptor implements HttpInterceptor {
         }
         const cachedResponse = cache[request.urlWithParams] || null;
         if (cachedResponse) {
-            return Observable.of(cachedResponse);
+            return observableOf(cachedResponse);
         }
 
-        return next.handle(request).do(event => {
+        return next.handle(request).pipe(tap(event => {
             if (event instanceof HttpResponse) {
                 cache[request.urlWithParams] = event;
             }
-        });
+        }));
     }
 }

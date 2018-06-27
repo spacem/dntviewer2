@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RegionService } from './core/region.service';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { LoadingService } from './core/loading/loading.service';
 import { CacheInterceptor } from './cache.interceptor';
 
@@ -23,7 +23,7 @@ export class FileListService {
 
     return observable.pipe(
       map(data => {
-        return data.split('\n').filter(d => d.indexOf('lzjson') > -1 && d.indexOf('uistring') === -1).map(f => f.trim());
+        return data.split('\n').filter(d => d.indexOf('json') > -1 && d.indexOf('uistring') === -1).map(f => f.trim());
       }));
   }
 

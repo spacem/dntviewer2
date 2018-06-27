@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable , of, Subject } from 'rxjs';
 
 @Injectable()
 export class LoadingServiceStub {
@@ -16,7 +15,7 @@ export class LoadingServiceStub {
 @Injectable()
 export class HttpClientStub {
     get() {
-        return Observable.of();
+        return of();
     }
 }
 

@@ -23,7 +23,7 @@
   </div>
   <div class="col-12" *ngIf="openFiles.length">
     <a routerLink="/file/{{file}}" class="btn btn-secondary btn-block" *ngFor="let file of openFiles">
-      {{ file.replace('.lzjson', '') }}
+      {{ file.replace('.json', '') }}
     </a>
   </div>
 
@@ -32,6 +32,6 @@
   </div>
   <div class="col-12" *ngIf="files">
     <a routerLink="/file/{{file}}" class="btn btn-secondary btn-block" *ngFor="let file of files">
-      {{ file.replace('.lzjson', '') }}
+      {{ file.replace('.json', '') }}
     </a>
 </div>

@@ -3,12 +3,13 @@ import { FileListService } from '../file-list.service';
 import { DntService } from '../dnt.service';
 import { ActivatedRoute } from '@angular/router';
 import { DntData } from '../dnt-data';
-import { ColumnApi, GridApi, GridOptions, IGetRowsParams, IDatasource } from 'ag-grid/main';
+import { ColumnApi, GridApi, GridOptions, IGetRowsParams, IDatasource, ColumnVisibleEvent } from 'ag-grid/main';
 import { RegionService } from '../core/region.service';
 import { CacheInterceptor } from '../cache.interceptor';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 import { TranslationService } from '../translation.service';
+import { SettingsService } from '../settings.service';
+import { GridHeaderComponent } from '../grid-header/grid-header.component';
 
 @Component({
   selector: 'app-file-view',
@@ -23,6 +24,7 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
   private gridColumnApi: any;
   private columnStatuses: any = {};
   private columnIndexes: any = {};
+  private fileName: string;
   data: DntData;
 
   textColumns = [
@@ -38,6 +40,7 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
     'Explanation',
     'ModeDescription',
     'SkillExplanationID',
+    'CoreStatusNameID'
   ];
 
   showOptions: boolean;
@@ -47,7 +50,16 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
     enableSorting: true,
     showToolPanel: false,
     enableColResize: true,
-    datasource: this
+    datasource: this,
+    defaultColDef: {
+      headerComponentFramework : <{new():GridHeaderComponent}>GridHeaderComponent,
+      headerComponentParams : {
+        getDntData: () => this.data,
+        getColumnStatuses: () => this.columnStatuses,
+        getColumnIndexes: () => this.columnIndexes,
+        saveStatuses: () => this.settingsService.saveColumnStatuses(this.fileName, this.columnStatuses),
+      }
+    }
   };
 
   constructor(
@@ -55,7 +67,8 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
     private dntService: DntService,
     private regionService: RegionService,
     private translateService: TranslationService,
-    private cacheInterceptor: CacheInterceptor) {
+    private cacheInterceptor: CacheInterceptor,
+    private settingsService: SettingsService) {
   }
 
   ngOnInit() {
@@ -77,8 +90,8 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
       this.translateSubScription.unsubscribe();
       this.translateSubScription = null;
     }
-    const fileName = this.route.snapshot.paramMap.get('fileName');
-    this.subscription = this.dntService.getData(fileName).subscribe(data => {
+    this.fileName = this.route.snapshot.paramMap.get('fileName');
+    this.subscription = this.dntService.getData(this.fileName).subscribe(data => {
       this.data = data;
       this.createColumns();
       this.createData();
@@ -112,31 +125,12 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
   createData() {
     if (!this.translateSubScription && this.columnDefs.find(c => this.columnStatuses[c.field] === 'text')) {
       this.translateSubScription = this.translateService.getTranslations().subscribe(() => {
-        this.createDataAfterInit();
       });
-    } else {
-      this.createDataAfterInit();
     }
-  }
-
-  createDataAfterInit() {
-    /*
-    this.rowData = [];
-    for (const r of this.data.data) {
-      const row: any = {};
-      for (let colIndex = 0; colIndex < this.data.numColumns; ++colIndex) {
-        const colName = this.data.columnNames[colIndex];
-        row[colName] = r[colIndex];
-        if (this.columnDefs[colIndex].status === 'text') {
-          row[colName] = this.translateService.simpleTranslate(row[colName]);
-        }
-      }
-      this.rowData.push(row);
-    }
-    */
   }
 
   createColumns() {
+    console.log('creating columns');
     this.columnDefs.splice(0, this.columnDefs.length);
     for (let i = 0; i < this.data.columnNames.length; ++i) {
       const c = this.data.columnNames[i];
@@ -148,10 +142,10 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
           newRowsAction: 'keep',
           defaultOption: 'equals',
           filterOptions: ['equals']
-        }
+        },
+        menuTabs: ['filterMenuTab', 'generalMenuTab', 'columnsMenuTab']
       };
 
-      this.columnStatuses[c] = 'normal';
       this.columnIndexes[c] = i;
 
       if (this.data.columnTypes[c] === 1) {
@@ -160,8 +154,15 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
         def.filterParams.defaultOption = 'contains';
       }
 
-      if (this.textColumns.indexOf(c) !== -1) {
-        this.columnStatuses[c] = 'text';
+      if (!this.columnStatuses[c]) {
+        if (this.textColumns.indexOf(c) !== -1) {
+          this.columnStatuses[c] = 'text';
+        } else {
+          this.columnStatuses[c] = 'normal';
+        }
+      }
+
+      if (this.columnStatuses[c] === 'text' || this.data.columnTypes[i] === 1) {
         def.filter = 'text';
         def.filterParams.filterOptions.push('contains');
         def.filterParams.defaultOption = 'contains';
@@ -192,6 +193,7 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
   }
 
   applyColumn(col: any) {
+    this.settingsService.saveColumnStatuses(this.fileName, this.columnStatuses);
     this.gridColumnApi.setColumnVisible(col.field, (this.columnStatuses[col.field] !== 'hidden'));
     this.createData();
   }
@@ -199,10 +201,37 @@ export class FileViewComponent implements OnInit, OnDestroy, IDatasource {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    if (this.gridOptions.rowModelType == 'infinite') {
-      this.gridApi.addEventListener('filterChanged', () => {
+    this.gridApi.refreshCells();
+
+    this.restoreSettings();
+
+    this.gridApi.addEventListener('columnVisible', (event: ColumnVisibleEvent) => {
+      if (!event.visible) {
+        this.columnStatuses[event.column.getColId()] = 'hidden';
+        this.settingsService.saveColumnStatuses(this.fileName, this.columnStatuses);
+      }
+    });
+
+    this.gridApi.addEventListener('filterChanged', () => {
+      if (this.gridOptions.rowModelType === 'infinite') {
         this.gridApi.setDatasource(this);
-      });
+      }
+      this.settingsService.saveFilterModel(this.fileName, this.gridApi.getFilterModel());
+    });
+  }
+
+  restoreSettings() {
+    const filterModel = this.settingsService.getFilterModel(this.fileName);
+    if (filterModel) {
+      this.gridApi.setFilterModel(filterModel);
+    }
+
+    const columnStatuses = this.settingsService.getColumnStatuses(this.fileName);
+    if (columnStatuses) {
+      this.columnStatuses = columnStatuses;
+      for (const col of this.columnDefs) {
+        this.applyColumn(col);
+      }
     }
   }
 

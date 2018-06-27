@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'variables';
-@import '../node_modules/bootstrap/scss/bootstrap';
-@import '../node_modules/font-awesome/scss/font-awesome';
-@import '../node_modules/ag-grid/dist/styles/ag-grid.css';
-@import '../node_modules/ag-grid/dist/styles/ag-theme-dark.css';
+@import '~bootstrap/scss/bootstrap';
+@import '~ag-grid/dist/styles/ag-grid.css';
+@import '~ag-grid/dist/styles/ag-theme-dark.css';
+@import '~font-awesome/scss/font-awesome.scss';
 
 .dngearsim-background-image {
     background: url(//dnskillsim.herokuapp.com/background/background.png);

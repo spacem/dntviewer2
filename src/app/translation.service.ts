@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RegionService } from './core/region.service';
-import { decompressFromUTF16 } from 'lz-string';
-import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { LoadingService } from './core/loading/loading.service';
 
@@ -16,25 +15,19 @@ export class TranslationService {
   }
 
   getTranslations() {
-    const url = this.regionService.region.url + '/uistring.lzjson';
+    const url = this.regionService.region.url + '/uistring.json';
     let observable;
-    if (sessionStorage.getItem('UIStrings_file') === url) {
-      observable = Observable.of(sessionStorage.getItem('UIStrings'));
-    } else {
-      observable = this.http.get(url, { responseType: 'text' });
-    }
-    observable = observable.do(data => {
-      sessionStorage.setItem('UIStrings', data);
+    observable = this.http.get(url);
+    observable = observable.pipe(tap(data => {
       this.setupData(data);
-    });
+    }));
 
-    observable = this.loadingService.subscribe('uistring.lzjson', observable);
+    observable = this.loadingService.subscribe('uistring.json', observable);
     return observable;
   }
 
   private setupData(data: any) {
-    const stringifiedData = decompressFromUTF16(data);
-    this.data = JSON.parse(stringifiedData);
+    this.data = data;
   }
 
   fullTranslate(id: string, idParam: string) {

@@ -10,6 +10,7 @@ import { RegionServiceStub, CacheInterceptorStub } from '../../testing/index';
 import { TranslationService } from '../translation.service';
 import { CacheInterceptor } from '../cache.interceptor';
 import { Observable } from 'rxjs/Observable';
+import { SettingsService } from '../settings.service';
 
 @Component({ selector: 'ag-grid-angular', template: '' })
 class AgGridStubComponent {
@@ -43,6 +44,7 @@ describe('FileViewComponent', () => {
         { provide: RegionService, useClass: RegionServiceStub },
         { provide: TranslationService, useClass: TranslationServiceStub },
         { provide: CacheInterceptor, useClass: CacheInterceptorStub },
+        SettingsService,
       ]
     })
     .compileComponents();
