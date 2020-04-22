@@ -10,14 +10,14 @@ export interface Region {
 @Injectable()
 export class RegionService {
   regions: Region[] = [
-    { region: 'sea', name: 'south east asia', url: 'https://seadnfiles.netlify.com/public' },
-    { region: 'na', name: 'north america', url: 'https://nadnfiles.netlify.com/public' },
-    { region: 'eu', name: 'europe', url: 'https://eudnfiles.netlify.com/public' },
-    { region: 'th', name: 'thailand', url: 'https://thdnfiles.netlify.com/public' },
-    { region: 'tw', name: 'taiwan 臺灣', url: 'https://twdnfiles.netlify.com/public' },
-    { region: 'cdn', name: 'china 中國', url: 'https://cdnfiles.netlify.com/public' },
-    { region: 'kdn', name: 'korea 대한민국', url: 'https://kdnfiles.netlify.com/public' },
-    { region: 'br', name: 'Brazil', url: 'https://dnbr.netlify.com/public' },
+    { region: 'sea', name: 'south east asia', url: 'https://seadnfiles.netlify.app/public' },
+    { region: 'na', name: 'north america', url: 'https://nadnfiles.netlify.app/public' },
+    { region: 'eu', name: 'europe', url: 'https://eudnfiles.netlify.app/public' },
+    { region: 'th', name: 'thailand', url: 'https://thdnfiles.netlify.app/public' },
+    { region: 'tw', name: 'taiwan 臺灣', url: 'https://twdnfiles.netlify.app/public' },
+    { region: 'cdn', name: 'china 中國', url: 'https://cdnfiles.netlify.app/public' },
+    { region: 'kdn', name: 'korea 대한민국', url: 'https://kdnfiles.netlify.app/public' },
+    { region: 'br', name: 'Brazil', url: 'https://dnbr.netlify.app/public' },
   ];
 
   region: Region = this.regions[this.regions.length - 1];
