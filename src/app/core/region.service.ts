@@ -18,6 +18,7 @@ export class RegionService {
     { region: 'cdn', name: 'china 中國', url: 'https://cdnfiles.netlify.app/public' },
     { region: 'kdn', name: 'korea 대한민국', url: 'https://kdnfiles.netlify.app/public' },
     { region: 'br', name: 'Brazil', url: 'https://dnbr.netlify.app/public' },
+    { region: 'duck', name: 'project duck', url: 'https://duckdnfiles.netlify.app/public' },
   ];
 
   region: Region = this.regions[this.regions.length - 1];
